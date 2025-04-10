@@ -10,5 +10,5 @@ class User(Base):
     gender = Column(Boolean)
     dob = Column(Date)
     vehicle = Column(String)
-    created_date = Column(DateTime)
+
     
