@@ -46,7 +46,7 @@ Base.metadata.create_all(bind=engine)
 # REDIRECT_URI = "http://localhost:8000/callback"
 
 # OAuth2PasswordBearer instance
-# oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
 """
 Log in endpoint.
@@ -181,6 +181,8 @@ def fastapi_test():
         "message":"Fastapi working."
     }
     
+
+############# MOCK UP SECTION #############
 """
 Simulate a login endpoint to provide a token (not for production, only mockup)
 """
@@ -194,3 +196,33 @@ async def login_for_access_token(username: str = Form(...), password: str = Form
         token = utilities.create_access_token(payload)
         return {"access_token": token, "token_type": "bearer"}
     raise HTTPException(status_code=400, detail="Invalid credentials")
+
+"""
+Simulate retrieving profile after logged in with JWT verification
+"""
+@app.get("/mock-profile")
+async def get_mock_profile(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    user_profile = db.query(User, UserContact).join(UserContact, User.user_id == UserContact.user_id).filter(User.username == "admin").first()
+     # If no user or contact found, raise an HTTPException
+    if user_profile is None:
+        raise HTTPException(status_code=404, detail="User or contact information not found")
+    
+    user, user_contact = user_profile
+    
+    return {
+        "user": {
+            "username": user.username,
+            "display_name": user.display_name,
+            "gender": user.gender,
+            "dob": user.dob,
+            "vehicle": user.vehicle,
+            "created_date": user.created_date
+        },
+        "user_contact": {
+            "phone": user_contact.phone,
+            "email": user_contact.email,
+            "address": user_contact.address,
+            "district": user_contact.district,
+            "city": user_contact.city
+        }
+    }
