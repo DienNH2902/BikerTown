@@ -14,6 +14,7 @@ from schemas.user_create import UserCreate
 
 import jwt
 import os
+import pytz
 
 # Load environment variable from the .env file
 load_dotenv()
@@ -84,8 +85,12 @@ Creating an access token for the user
 def create_access_token(data: dict):
     # Payload preparation
     payload = data.copy()
+
     exp_delta = timedelta(hours=ACCESS_TOKEN_EXP_DELTA)
-    iat = datetime.now()
+    local_tz = pytz.timezone('Asia/Bangkok')  # For Indochina Time
+
+    now = datetime.now(local_tz).astimezone(pytz.utc)
+    iat = now
     exp = iat + exp_delta
     payload.update({
         "iat": iat,
@@ -97,9 +102,9 @@ def create_access_token(data: dict):
     return jwt_token
 
 """
-Verifying the access token provided by the client
+Decode the access token provided by the client
 """
-def verify_access_token(token: str = Depends(oauth2_scheme)):
+def decode_access_token(token: str):
     try:
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         return payload

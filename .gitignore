@@ -20,3 +20,4 @@ venv/
 
 # Ignore log files (optional)
 *.log
+node_modules

@@ -141,8 +141,9 @@ async def register(username: str = Form(...),
     
 
 @app.get("/profile")
-async def get_profile(current_user: dict = Depends(utilities.verify_access_token), db: Session = Depends(get_db)):
-    user_profile = db.query(User, UserContact).join(UserContact, User.user_id == UserContact.user_id).filter(User.username == current_user.username).first()
+async def get_profile(token: str = Depends(oauth2_scheme), db: Session = Depends(get_db)):
+    current_user = utilities.decode_access_token(token)
+    user_profile = db.query(User, UserContact).join(UserContact, User.user_id == UserContact.user_id).filter(User.username == current_user['username']).first()
      # If no user or contact found, raise an HTTPException
     if user_profile is None:
         raise HTTPException(status_code=404, detail="User or contact information not found")
