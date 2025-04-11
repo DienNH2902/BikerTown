@@ -35,13 +35,15 @@ venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-8. To configure database setup, create a .env file and enter:
+8. Add and configure a .env file for the application:
 ```bash
 DATABASE_URL="[your database url]"
+SECRET_KEY = "[jwt secret key]"
 ```
 
 ## Usage
 
 ```python
-uvicorn app_controller.py
+# For development
+uvicorn app_controller:app --reload
 ```
