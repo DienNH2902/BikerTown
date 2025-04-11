@@ -74,6 +74,7 @@ async def login(username: str = Form(...), password: str = Form(...), db: Sessio
     response = {
         "message": f"Log in successful. Welcome {user.display_name}",
         "username": f"{user.username}",
+        "display_name": f"{user.display_name}",
         "token": access_token,
         "token_type": "bearer"
     }
