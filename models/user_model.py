@@ -1,4 +1,5 @@
 from sqlalchemy import Boolean, Column, Date, DateTime, Integer, String
+from sqlalchemy.orm import relationship
 from database import Base
 
 class User(Base):
@@ -10,5 +11,7 @@ class User(Base):
     gender = Column(Boolean)
     dob = Column(Date)
     vehicle = Column(String)
+    created_date = Column(DateTime)
 
+    user_contact = relationship("UserContact", back_populates="user")
     
