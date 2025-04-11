@@ -40,11 +40,6 @@ app.add_middleware(
 # Create the tables in the database
 Base.metadata.create_all(bind=engine)
 
-# GitHub OAuth2 configuration
-# CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
-# CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
-# REDIRECT_URI = "http://localhost:8000/callback"
-
 # OAuth2PasswordBearer instance
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
