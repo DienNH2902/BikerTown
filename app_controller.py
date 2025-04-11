@@ -107,7 +107,7 @@ def read_root(db: Session = Depends(get_db)):
         "gender": result.gender,
         "dob": result.dob,
         "vehicle": result.vehicle,
-        "created_date": result.created_date
+        # "created_date": result.created_date
     }
     
     return response
