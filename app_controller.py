@@ -1,7 +1,7 @@
-from datetime import datetime
+from datetime import date, datetime
 import os
 from dotenv import load_dotenv
-from fastapi import Depends, FastAPI, Form, HTTPException, requests
+from fastapi import Depends, FastAPI, Form, HTTPException, requests, status
 from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
@@ -73,6 +73,7 @@ async def login(username: str = Form(...), password: str = Form(...), db: Sessio
 
     response = {
         "message": f"Log in successful. Welcome {user.display_name}",
+        "user_id": f"{user.user_id}",
         "username": f"{user.username}",
         "display_name": f"{user.display_name}",
         "token": access_token,
@@ -167,6 +168,89 @@ async def get_profile(token: str = Depends(oauth2_scheme), db: Session = Depends
             "city": user_contact.city
         }
     }
+
+"""
+Update profile endpoint.
+"""
+@app.post("/update-profile")
+async def update_profile(token: str = Depends(oauth2_scheme),
+                         display_name: str = Form(...),
+                         gender: bool = Form(...),
+                         dob: str = Form(...),
+                         vehicle: str = Form(...),
+                         email: str = Form(...),
+                         phone: str = Form(...),
+                         address: str = Form(...),
+                         city: str = Form(...),
+                         district: str = Form(...),
+                         db: Session = Depends(get_db)):
+    current_user = utilities.decode_access_token(token)
+    user_profile = db.query(User, UserContact).join(UserContact, User.user_id == UserContact.user_id).filter(User.user_id == current_user["user_id"]).first()
+
+    if not user_profile:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user, user_contact = user_profile
+
+    if display_name:
+        user.display_name = utilities.sanitize(display_name)
+    if dob:
+        dob_as_date = datetime.strptime(dob, "%Y-%m-%d").date() 
+        user.dob = dob_as_date
+    if vehicle:
+        user.vehicle = utilities.sanitize(vehicle)
+    if email:
+        user_contact.email = email.strip()
+    if phone:
+        user_contact.phone = utilities.sanitize(phone)
+    if address:
+        user_contact.address = address.strip()
+    if city:
+        user_contact.city = city
+    if district:
+        user_contact.district = district
+
+    user.gender = gender
+
+    db.commit()
+    db.refresh(user)
+    db.refresh(user_contact)
+
+    return JSONResponse(content={"message": "Profile updated successfully."}, status_code=status.HTTP_200_OK)
+    
+@app.post("/update-password")
+async def update_password(token: str = Depends(oauth2_scheme), 
+                          current_pwd: str = Form(...), 
+                          new_pwd: str = Form(...), 
+                          db: Session = Depends(get_db)):
+    
+    current_user = utilities.decode_access_token(token)
+    user = db.query(User).filter(User.user_id == current_user['user_id']).first()
+
+    # If there is no match, return an error
+    if (user is None):
+        raise HTTPException(status_code=400, detail="Invalid username or password")
+    
+    encoded_current_pwd = current_pwd.encode('utf-8')
+    encoded_user_pwd = user.password.encode('utf-8')
+    encoded_new_pwd = new_pwd.encode('utf-8')
+
+    # Checking if the current password matches the hashed password
+    if not (bcrypt.checkpw(encoded_current_pwd, encoded_user_pwd)):
+        raise HTTPException(status_code=400, detail="Incorrect current password.")
+    
+    if (current_pwd == new_pwd):
+        raise HTTPException(status_code=400, detail="New password can not be the same as current password.")
+    
+    user.password = bcrypt.hashpw(encoded_new_pwd, salt)
+    
+    db.commit()
+    db.refresh(user.password)
+
+    return {
+        "message": "Password is updated successfully!",
+    }
+
 
 
 """

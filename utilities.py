@@ -1,5 +1,7 @@
 
 from datetime import datetime, timedelta
+import re
+import string
 from typing import Dict
 from dotenv import load_dotenv
 from fastapi import Depends, HTTPException, status
@@ -113,4 +115,11 @@ def decode_access_token(token: str):
     except jwt.InvalidTokenError:
         raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token")
 
-    
+"""Sanitizing input"""
+def sanitize(input: str):
+    # Trim the input, remove HTML tags, remove punctuation, and clean spaces
+    sanitized_input = re.sub(r'<[^>]*>', '', input.strip())  # Remove HTML tags
+    sanitized_input = sanitized_input.translate(str.maketrans('', '', string.punctuation))  # Remove punctuation
+    sanitized_input = " ".join(sanitized_input.split())  # Remove extra spaces
+
+    return sanitized_input
