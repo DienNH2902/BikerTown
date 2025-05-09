@@ -1,5 +1,4 @@
 from datetime import date, datetime
-import os
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, Form, HTTPException, requests, status
 from fastapi.responses import JSONResponse
@@ -13,14 +12,12 @@ from schemas.user_create import UserCreate
 from fastapi.middleware.cors import CORSMiddleware
 import utilities
 import bcrypt
+import os
 
 
 # Initialize FastAPI app
 app = FastAPI()
 load_dotenv()
-
-# Create a hash salt for the hashing algorithm
-salt = bcrypt.gensalt(rounds=15)
 
 # List of allowed origins
 origins = [
@@ -107,7 +104,7 @@ async def register(username: str = Form(...),
     # If not, create a hash for the new password, add it to the new user and insert the user onto the database
     # Encode the password before feeding into bcrypt
     password = password.encode('utf-8')
-    hashed_password = bcrypt.hashpw(password, salt)
+    hashed_password = bcrypt.hashpw(password, bcrypt.gensalt()).decode('utf-8')
     new_user = UserCreate(username=username, 
                           password=hashed_password, 
                           display_name=display_name, 
@@ -222,6 +219,7 @@ async def update_profile(token: str = Depends(oauth2_scheme),
 async def update_password(token: str = Depends(oauth2_scheme), 
                           current_pwd: str = Form(...), 
                           new_pwd: str = Form(...), 
+                          cf_new_pwd: str = Form(...),
                           db: Session = Depends(get_db)):
     
     current_user = utilities.decode_access_token(token)
@@ -230,6 +228,9 @@ async def update_password(token: str = Depends(oauth2_scheme),
     # If there is no match, return an error
     if (user is None):
         raise HTTPException(status_code=400, detail="Invalid username or password")
+    
+    if (new_pwd != cf_new_pwd):
+        raise HTTPException(status_code=400, detail="New passwords don't match!")
     
     encoded_current_pwd = current_pwd.encode('utf-8')
     encoded_user_pwd = user.password.encode('utf-8')
@@ -242,10 +243,10 @@ async def update_password(token: str = Depends(oauth2_scheme),
     if (current_pwd == new_pwd):
         raise HTTPException(status_code=400, detail="New password can not be the same as current password.")
     
-    user.password = bcrypt.hashpw(encoded_new_pwd, salt)
+    user.password = bcrypt.hashpw(encoded_new_pwd, bcrypt.gensalt()).decode('utf-8')
     
     db.commit()
-    db.refresh(user.password)
+    db.refresh(user)
 
     return {
         "message": "Password is updated successfully!",
