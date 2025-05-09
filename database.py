@@ -5,6 +5,7 @@ from databases import Database
 from dotenv import load_dotenv
 import os
 
+
 # Load environment variable from the .env file
 load_dotenv()
 

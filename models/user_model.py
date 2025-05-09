@@ -14,4 +14,5 @@ class User(Base):
     created_date = Column(DateTime)
 
     user_contact = relationship("UserContact", back_populates="user")
+    trips = relationship("Trip", back_populates="user")
     

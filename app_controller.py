@@ -5,6 +5,7 @@ from fastapi.responses import JSONResponse
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.orm import Session
 from database import Base, get_db, engine
+from models.trip_model import Trip
 from models.user_contact_model import UserContact
 from models.user_model import User
 from schemas.user_contact_create import UserContactCreate
@@ -214,7 +215,10 @@ async def update_profile(token: str = Depends(oauth2_scheme),
     db.refresh(user_contact)
 
     return JSONResponse(content={"message": "Profile updated successfully."}, status_code=status.HTTP_200_OK)
-    
+
+"""
+Update password endpoint.
+"""    
 @app.post("/update-password")
 async def update_password(token: str = Depends(oauth2_scheme), 
                           current_pwd: str = Form(...), 
@@ -252,6 +256,24 @@ async def update_password(token: str = Depends(oauth2_scheme),
         "message": "Password is updated successfully!",
     }
 
+"""
+Retrieve trip info endpoint.
+"""
+@app.get("/schedules")
+async def get_schedules(db: Session = Depends(get_db)):
+    # from models.trip_model import Trip  # Local import to avoid circular import
+    # from models.trip_stops_model import TripStops  # Local import
+    # from models.stop_model import Stop  # Local import
+    
+    # # Now you can use the models here
+    # trip = Trip()  # Example usage
+    # trip_stop = TripStops()  # Example usage
+    # stop = Stop()  # Example usage
+
+    user_id = 29 # mockup user, replace with user_id from JWT Token later
+
+    schedules = db.query(Trip).filter(Trip.user_id == user_id).first()
+    return schedules
 
 
 """
