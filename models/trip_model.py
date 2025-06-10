@@ -12,7 +12,7 @@ class Trip(Base):
     __tablename__ = "trips"
     trip_id = Column(Integer, primary_key = True, index = True)
     start = Column(String)
-    dest = Column(String)
+    destination = Column(String)
     date = Column(Date)
     time = Column(Time)
     trip_status = Column(SQLAlchemyEnum(TripStatusEnum))

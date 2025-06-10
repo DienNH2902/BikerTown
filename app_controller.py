@@ -1,4 +1,4 @@
-from datetime import date, datetime
+from datetime import date, datetime, time
 from dotenv import load_dotenv
 from fastapi import Depends, FastAPI, Form, HTTPException, requests, status
 from fastapi.responses import JSONResponse
@@ -39,7 +39,7 @@ app.add_middleware(
 Base.metadata.create_all(bind=engine)
 
 # OAuth2PasswordBearer instance
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
 
 """
 Log in endpoint.
@@ -261,19 +261,69 @@ Retrieve trip info endpoint.
 """
 @app.get("/schedules")
 async def get_schedules(db: Session = Depends(get_db)):
-    # from models.trip_model import Trip  # Local import to avoid circular import
-    # from models.trip_stops_model import TripStops  # Local import
-    # from models.stop_model import Stop  # Local import
-    
-    # # Now you can use the models here
-    # trip = Trip()  # Example usage
-    # trip_stop = TripStops()  # Example usage
-    # stop = Stop()  # Example usage
-
+    # TODO: Replace with user_id from JWT Token later
+    # For now, using a mockup user_id for testing purposes
     user_id = 29 # mockup user, replace with user_id from JWT Token later
 
-    schedules = db.query(Trip).filter(Trip.user_id == user_id).first()
+    schedules = db.query(Trip).filter(User.user_id == user_id).all()
+    print(schedules)
     return schedules
+
+"""
+Add a new trip schedule endpoint.
+Might be a good idea to integrate stops suggestion later in this section (?)
+"""
+@app.post("/add-schedule")
+async def add_schedule(# token: str = Depends(oauth2_scheme),
+                      trip_start: str = Form(...),
+                      trip_destination: str = Form(...),
+                      trip_date: date = Form(...),
+                      trip_time: str = Form(...),
+                      trip_status: str = Form(...),
+                      db: Session = Depends(get_db)):
+    
+    # current_user = utilities.decode_access_token(token)
+    # if not current_user:
+    #     raise HTTPException(status_code=401, detail="Not logged in")
+    
+    # user_id = current_user['user_id']
+
+    user_id = 29 # mockup user, replace with user_id from JWT Token later
+    parsed_time = datetime.strptime(trip_time, "%I:%M:%S %p").time()
+    parsed_status = ""
+
+    if trip_status:
+        if (trip_status == "Upcoming"):
+            parsed_status = "upcoming"
+        elif (trip_status == "Finished"):
+            parsed_status = "finished"
+        elif (trip_status == "In Progress"):
+            parsed_status = "in_progress"
+        else:
+            raise HTTPException(status_code=401, detail="Invalid status")
+    
+
+    # Create a new Trip instance
+    new_trip = Trip(start = trip_start,
+                    destination = trip_destination,
+                    date = trip_date,
+                    time = parsed_time,
+                    trip_status = parsed_status,
+                    user_id = user_id)
+        
+    db.add(new_trip)
+    db.commit()
+    db.refresh(new_trip)
+
+    return {"message": "Trip added successfully", "trip_id": new_trip.trip_id}
+
+# """Validate a token."""
+@app.get("/validate-token")
+async def validate_token(token: str = Depends(oauth2_scheme)):
+    current_user = utilities.decode_access_token(token)
+
+    if not current_user:
+        raise HTTPException(status_code=401, detail="Not logged in")   
 
 
 """
