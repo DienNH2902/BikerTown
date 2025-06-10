@@ -1,0 +1,46 @@
+.history-description {
+    margin-bottom: 24px;
+  }
+  
+  .trip-card {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  
+  .trip-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+  }
+  
+  .trip-title {
+    margin-bottom: 8px;
+  }
+  
+  .trip-divider {
+    margin: 12px 0;
+  }
+  
+  .trip-photos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  
+  .photo {
+    border-radius: 8px;
+    object-fit: cover;
+  }
+  
+  .add-photo-btn {
+    height: 150px;
+    width: 100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 1px dashed #d9d9d9;
+    border-radius: 8px;
+  }
+  

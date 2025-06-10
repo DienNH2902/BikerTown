@@ -1,0 +1,355 @@
+/* Room Container */
+.room-container {
+    height: 100vh;
+    background-color: #202124;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  /* Room Header */
+  .room-header {
+    background-color: #202124;
+    padding: 0 16px;
+    height: 64px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #3c4043;
+  }
+  
+  .room-title {
+    display: flex;
+    align-items: center;
+  }
+  
+  .room-actions {
+    display: flex;
+    gap: 8px;
+  }
+  
+  /* Room Content */
+  .room-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  /* Video Container */
+  .video-container {
+    flex: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px;
+    overflow: auto;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .grid-layout {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-auto-rows: 1fr;
+    gap: 8px;
+  }
+  
+  .participants-1 {
+    grid-template-columns: 1fr;
+  }
+  
+  .participants-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .participants-3,
+  .participants-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .participants-5,
+  .participants-6 {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  .spotlight-layout {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+  
+  .spotlight-video {
+    flex: 3;
+    padding: 8px;
+  }
+  
+  .other-videos {
+    flex: 1;
+    display: flex;
+    overflow-x: auto;
+    gap: 8px;
+    padding: 8px;
+  }
+  
+  /* Video Wrapper */
+  .video-wrapper {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #3c4043;
+  }
+  
+  .video-wrapper.small {
+    min-width: 160px;
+    max-width: 240px;
+  }
+  
+  .video-wrapper.spotlight {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .video-frame {
+    width: 100%;
+    height: 100%;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .video-stream {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+  
+  .video-placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: #3c4043;
+    color: white;
+  }
+  
+  .participant-name {
+    margin-top: 8px;
+    font-size: 14px;
+  }
+  
+  .video-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .video-wrapper:hover .video-controls {
+    opacity: 1;
+  }
+  
+  .participant-info {
+    font-size: 14px;
+  }
+  
+  .video-actions {
+    display: flex;
+    gap: 4px;
+  }
+  
+  .video-actions .ant-btn {
+    color: white;
+  }
+  
+  /* Room Controls */
+  .room-controls {
+    display: flex;
+    justify-content: space-between;
+    padding: 16px;
+    background-color: #202124;
+    border-top: 1px solid #3c4043;
+  }
+  
+  .control-group {
+    display: flex;
+    gap: 16px;
+  }
+  
+  .control-button {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .end-call {
+    transform: rotate(135deg);
+  }
+  
+  .active-control {
+    background-color: #ea4335;
+    border-color: #ea4335;
+  }
+  
+  .active-share {
+    background-color: #1a73e8;
+    border-color: #1a73e8;
+  }
+  
+  .active-pin {
+    color: #1a73e8;
+  }
+  
+  /* Chat Drawer */
+  .chat-drawer .ant-drawer-body {
+    display: flex;
+    flex-direction: column;
+    height: calc(100% - 55px);
+  }
+  
+  .chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+  }
+  
+  .chat-message {
+    margin-bottom: 16px;
+    max-width: 85%;
+  }
+  
+  .self-message {
+    margin-left: auto;
+  }
+  
+  .system-message {
+    text-align: center;
+    color: #5f6368;
+    font-style: italic;
+    max-width: 100%;
+    margin: 8px 0;
+  }
+  
+  .message-sender {
+    font-weight: 500;
+    margin-bottom: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .message-time {
+    font-size: 12px;
+    color: #5f6368;
+    font-weight: normal;
+  }
+  
+  .message-content {
+    padding: 8px 12px;
+    background-color: #f1f3f4;
+    border-radius: 8px;
+    word-break: break-word;
+  }
+  
+  .self-message .message-content {
+    background-color: #d2e3fc;
+  }
+  
+  .chat-input {
+    padding: 12px;
+    border-top: 1px solid #e8eaed;
+  }
+  
+  .chat-icon {
+    cursor: pointer;
+    color: #5f6368;
+  }
+  
+  .chat-icon:hover {
+    color: #1a73e8;
+  }
+  
+  .send-icon {
+    color: #1a73e8;
+  }
+  
+  /* Meeting Info */
+  .meeting-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .meeting-link {
+    margin-top: 8px;
+  }
+  
+  .meeting-details p {
+    margin-bottom: 8px;
+  }
+  
+  /* Invite Modal */
+  .invite-section {
+    padding: 16px 0;
+  }
+  
+  /* Custom Tag */
+  .custom-tag {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    margin-left: 8px;
+  }
+  
+  .custom-tag.blue {
+    background-color: rgba(24, 90, 188, 0.1);
+    color: #185abc;
+  }
+  
+  .custom-tag.green {
+    background-color: rgba(52, 168, 83, 0.1);
+    color: #34a853;
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 768px) {
+    .room-controls {
+      flex-direction: column;
+      gap: 16px;
+      align-items: center;
+    }
+  
+    .control-group {
+      width: 100%;
+      justify-content: center;
+    }
+  
+    .grid-layout {
+      grid-template-columns: 1fr;
+    }
+  
+    .spotlight-layout {
+      flex-direction: column;
+    }
+  
+    .other-videos {
+      flex-direction: row;
+      overflow-x: auto;
+    }
+  }
+  

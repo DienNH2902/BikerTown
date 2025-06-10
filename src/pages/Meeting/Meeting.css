@@ -1,0 +1,30 @@
+.meeting-container {
+    padding: 24px;
+  }
+  
+  .meeting-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .meeting-description {
+    margin-bottom: 24px;
+  }
+  
+  .meeting-card {
+    height: 100%;
+  }
+  
+  .meeting-title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .meeting-icon {
+    font-size: 24px;
+    color: #f5222d;
+  }
+  

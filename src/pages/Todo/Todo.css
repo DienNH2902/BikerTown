@@ -1,0 +1,51 @@
+/* Todo.css */
+.todo-container {
+    padding: 24px;
+    background-color: #f9f9f9;
+    min-height: 100vh;
+  }
+  
+  .todo-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+  }
+  
+  .add-trip-btn,
+  .add-location-btn {
+    color: #fff;
+  }
+  
+  
+  .todo-card {
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .todo-footer-input {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 8px;
+  }
+  
+  .todo-footer-btn {
+    color: #fff;
+  }
+
+  
+  .modal-submit-btn {
+    color: #fff;
+  }
+
+  
+  .no-trips {
+    text-align: center;
+    margin-top: 48px;
+  }
+  
+  .no-trips .add-trip-btn {
+    margin-top: 16px;
+  }
+  

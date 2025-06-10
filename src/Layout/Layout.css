@@ -1,0 +1,18 @@
+/* AppLayout.css */
+
+.full-height-layout {
+    min-height: 100vh;
+  }
+  
+  .inner-layout {
+    min-height: 93vh;
+  }
+  
+  .content-style {
+    margin: 24px 16px;
+    padding: 24px;
+    background-color: rgb(241, 239, 236);
+    min-height: 280px;
+    border-radius: 20px;
+  }
+  

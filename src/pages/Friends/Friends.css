@@ -1,0 +1,44 @@
+.friends-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.friends-search {
+  margin-bottom: 24px;
+}
+
+.friend-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.friend-avatar-wrapper {
+  position: relative;
+}
+
+.friend-status-indicator {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+.friend-info {
+  width: 100%;
+}
+
+.friend-info-row {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.friend-message-button {
+  margin-top: 16px;
+}

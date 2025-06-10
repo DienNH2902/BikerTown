@@ -1,0 +1,59 @@
+/* Header.css */
+
+/* Style for the header container */
+.custom-header {
+    padding: 0 16px;
+    background: #001529;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    color: white;
+  }
+  
+  /* Left section containing the toggle button and brand */
+  .header-left {
+    display: flex;
+    align-items: center;
+  }
+  
+  /* Style for the toggle button */
+  .toggle-button {
+    font-size: 16px;
+    width: 64px;
+    height: 64px;
+    color: white;
+  }
+
+  .toggle-button:hover {
+    color: red !important;
+  }
+  
+  /* Style for the brand link */
+  .brand-link {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+  }
+  
+  /* Style for the brand title (site name) */
+  .brand-title {
+    margin: 0;
+    font-size: 1.2rem;
+    color: white;
+  }
+
+  .brand-title:hover {
+    color: red;
+  }
+  
+  /* Style for the avatar dropdown container */
+  .avatar-dropdown {
+    cursor: pointer;
+  }
+  
+  /* Style for modal footer text */
+  .modal-footer {
+    text-align: center;
+  }
+  
