@@ -1,0 +1,23 @@
+# Ignore Python bytecode
+__pycache__/
+*.pyc
+*.pyo
+
+# Ignore virtual environment
+venv/
+
+# Ignore environment configuration file
+.env
+
+# Ignore IDE configuration files (for VSCode)
+.vscode/
+
+# Ignore system files
+.DS_Store
+
+# Ignore migrations folder (if you use Alembic for DB migrations, uncomment the next line)
+# migrations/
+
+# Ignore log files (optional)
+*.log
+node_modules

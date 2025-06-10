@@ -1,24 +1,23 @@
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
+# Ignore Python bytecode
+__pycache__/
+*.pyc
+*.pyo
 
-node_modules
-dist
-dist-ssr
-*.local
+# Ignore virtual environment
+venv/
 
-# Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
+# Ignore environment configuration file
+.env
+
+# Ignore IDE configuration files (for VSCode)
+.vscode/
+
+# Ignore system files
 .DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+
+# Ignore migrations folder (if you use Alembic for DB migrations, uncomment the next line)
+# migrations/
+
+# Ignore log files (optional)
+*.log
+node_modules
